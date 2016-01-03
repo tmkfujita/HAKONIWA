@@ -4,7 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - box
+  - clickableObject
+  - EnvironmentObject
   layers:
   - Default
   - TransparentFX
