@@ -71,20 +71,29 @@ public class ViewController : MonoBehaviour {
     {
         if (menuModeFlg == true)
         {
-            Debug.Log("menu mode off");
-            menuModeFlg = false;
-            rigidBodyFPSController.menuModeFlg = false;
-            guiContorller.setMenuConsoleMode(0);
+            setMenuModeOff();
         }
         else
         {
-            Debug.Log("menu mode on");
-            UnityEngine.Cursor.lockState = CursorLockMode.Confined;
-            menuModeFlg = true;
-            rigidBodyFPSController.menuModeFlg = true;
-            //set gui console mode to defaultMenu mode
-            guiContorller.setMenuConsoleMode(1);
+            setMenuModeOn();
         }
+    }
+
+    public void setMenuModeOn()
+    {
+        //Debug.Log("menu mode on");
+        UnityEngine.Cursor.lockState = CursorLockMode.Confined;
+        menuModeFlg = true;
+        rigidBodyFPSController.menuModeFlg = true;
+        //set gui console mode to defaultMenu mode
+        guiContorller.setMenuConsoleMode(1);
+    }
+    public void setMenuModeOff()
+    {
+        //Debug.Log("menu mode off");
+        menuModeFlg = false;
+        rigidBodyFPSController.menuModeFlg = false;
+        guiContorller.setMenuConsoleMode(0);
     }
 
    //control detected object
@@ -115,5 +124,10 @@ public class ViewController : MonoBehaviour {
             }
         }
         Debug.DrawRay(ray.origin, ray.direction * 20, Color.yellow);
+    }
+
+    public GuiController getGuiController()
+    {
+        return guiContorller;
     }
 }
