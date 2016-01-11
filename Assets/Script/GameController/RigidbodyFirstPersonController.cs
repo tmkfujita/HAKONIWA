@@ -130,13 +130,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void Update()
         {
-            Debug.Log("aaa");
             if (menuModeFlg == true)
             {
                 return;
             }
-
-            Debug.Log("test");
 
             RotateView();
 
@@ -221,13 +218,19 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private Vector2 GetInput()
         {
-            
+
+            if (menuModeFlg == true)
+            {
+                return new Vector2(0, 0);
+            }
+
             Vector2 input = new Vector2
                 {
                     x = CrossPlatformInputManager.GetAxis("Horizontal"),
                     y = CrossPlatformInputManager.GetAxis("Vertical")
                 };
-			movementSettings.UpdateDesiredTargetSpeed(input);
+
+            movementSettings.UpdateDesiredTargetSpeed(input);
             return input;
         }
 

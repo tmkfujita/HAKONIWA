@@ -1,34 +1,37 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class ViewController : MonoBehaviour {
 
-    public GameObject mainCamera;
+    public Camera playerCamera;
     public bool menuModeFlg = false;
     public float cameraDetectDist=10;
     public float clickableDist = 1.0f;
 
     private GuiController guiContorller;
-    private Camera playerCamera;
     private RaycastHit hit;
+
+    private RigidbodyFirstPersonController rigidBodyFPSController;
 
 	// Use this for initialization
 	void Start () {
         try
         {
-            guiContorller =GetComponent<GuiController>();
+            guiContorller = new GuiController();
 
-            if (mainCamera != null)
+            if (playerCamera != null)
             {
-                playerCamera = mainCamera.GetComponent<Camera>();
+                guiContorller.initialize(playerCamera);
             }
+
+            rigidBodyFPSController = GameObject.Find("RigidBodyFPSController").GetComponent<RigidbodyFirstPersonController>();
         }
         catch (System.Exception)
         {
             Debug.Log("error: player camera is not detected");
             throw;
         }
-
     }
 	
 	// Update is called once per frame
@@ -39,18 +42,50 @@ public class ViewController : MonoBehaviour {
 
         if (mouseRightButton)
         {
-            menuModeFlg = true;
-            //set gui console mode to defaultMenu mode
-            guiContorller.setMenuConsoleMode(1);
+            triggerMenuMode();
         }
 
-        if (menuModeFlg) return;
-
+        if (menuModeFlg==true)
+        {
+            UnityEngine.Cursor.visible = true;
+            UnityEngine.Cursor.lockState = CursorLockMode.None;
+            return;
+        }
+        else
+        {
+            UnityEngine.Cursor.visible = false;
+            UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+        }
         if (playerCamera != null)
         {
             checkFrontObject(mouseLeftButton);
         }
 	}
+
+    void OnGUI()
+    {
+        guiContorller.controlGui();
+    }
+
+    private void triggerMenuMode()
+    {
+        if (menuModeFlg == true)
+        {
+            Debug.Log("menu mode off");
+            menuModeFlg = false;
+            rigidBodyFPSController.menuModeFlg = false;
+            guiContorller.setMenuConsoleMode(0);
+        }
+        else
+        {
+            Debug.Log("menu mode on");
+            UnityEngine.Cursor.lockState = CursorLockMode.Confined;
+            menuModeFlg = true;
+            rigidBodyFPSController.menuModeFlg = true;
+            //set gui console mode to defaultMenu mode
+            guiContorller.setMenuConsoleMode(1);
+        }
+    }
 
    //control detected object
     private void checkFrontObject(bool mouseLeftButton)
