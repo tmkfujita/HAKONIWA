@@ -178,7 +178,7 @@ MonoBehaviour:
   mainCamera: {fileID: 1306979472}
   menuModeFlg: 0
   cameraDetectDist: 10
-  clickableDist: 1
+  clickableDist: 2
 --- !u!114 &995521009
 MonoBehaviour:
   m_ObjectHideFlags: 0

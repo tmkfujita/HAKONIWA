@@ -8,7 +8,6 @@ public class ViewController : MonoBehaviour {
     public float cameraDetectDist=10;
     public float clickableDist = 1.0f;
 
-
     private GuiController guiContorller;
     private Camera playerCamera;
     private RaycastHit hit;
