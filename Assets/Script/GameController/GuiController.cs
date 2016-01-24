@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class GuiController{
 
+    private MainController mainController;
     private Texture viewCenterTexture;
     private Rect viewCenterRectangle;
     private MenuConsoleModes.Mode menuConsoleMode;
@@ -10,14 +12,29 @@ public class GuiController{
     private Camera playerCamera;
     private Camera menuCamera;
 
+    //dialogue text
+    private Text gameDialogueText;
+    private Text gameDialogueTextSub;
+    public bool isReadingText;
+    private int readingCounter;
+    private ArrayList currentReadingText;
 
-    public void initialize(Camera pCamera)
+    //menu gui parametors
+    private Canvas menuCanvas;
+    private Canvas menuOverlayCanvas;
+    private bool gameEndCheckerFlg = false;
+    private const int GAMEEND_DIALOGUE_INACTIVE = 30;
+    private const int GAMEEND_DIALOGUE_ACTIVE = 10;
+
+    public void initialize(Camera pCamera, MainController vController)
     {
+        mainController = vController;
         playerCamera = pCamera;
+
         menuConsoleMode = MenuConsoleModes.Mode.none;
         menuCamera = GameObject.Find("MenuCamera").GetComponent<Camera>();
 
-        int image_width = Screen.width / 26;
+        int image_width = Screen.width / 30;
         int image_height = image_width;
         int image_x = Screen.width / 2 - image_width / 2;
         int image_y = Screen.height / 2 - image_height / 2;
@@ -25,8 +42,55 @@ public class GuiController{
         viewCenterTexture = null;
         viewCenterRectangle = new Rect(image_x, image_y, image_width, image_height);
 
+        //init gameCanvas
+        gameDialogueText = GameObject.Find("gameDialogueText").GetComponent<Text>();
+        gameDialogueTextSub = GameObject.Find("gameDialogueTextSub").GetComponent<Text>();
+        isReadingText = false;
+
+        //initialize menu overlay canvas
+        menuCanvas = GameObject.Find("menuCanvas").GetComponent<Canvas>();
+
+        menuOverlayCanvas = GameObject.Find("menuOverlayCanvas").GetComponent<Canvas>();
+        menuOverlayCanvas.planeDistance = GAMEEND_DIALOGUE_INACTIVE;
+        gameEndCheckerFlg = false;
+
+        controlCanvasActivation(menuCanvas, false);
+        controlCanvasActivation(menuOverlayCanvas, false);
     }
     
+    //update GUI objects
+    public void controlGui()
+    {
+        updateViewCenterImage();
+        updateGUIContents();
+    }
+    //draw current center image
+    private void updateViewCenterImage()
+    {
+        if (viewCenterTexture != null)
+        {
+            GUI.DrawTexture(viewCenterRectangle, viewCenterTexture);
+        }
+    }
+
+    //for update gui images(now not in use)
+    private void updateGUIContents()
+    {
+        if (menuConsoleMode == MenuConsoleModes.Mode.defaultMode)
+        {
+
+        }
+        else if (menuConsoleMode == MenuConsoleModes.Mode.itemMode)
+        {
+
+        }
+        else
+        {
+
+        }
+    }
+
+    //control player center image
     public void setViewCenterImage(string imagePath)
     {
         try
@@ -47,65 +111,142 @@ public class GuiController{
         }
 
     }
-    //change menu console diplay
-    // 1-> defaultMenuMode
-    // 2-> itemConsoleMode
-    // others-> none
+    //change menu console display
     public void setMenuConsoleMode(int consoleMode)
     {
-        if (consoleMode == 0)
+        switch (consoleMode)
         {
-            menuConsoleMode = MenuConsoleModes.Mode.none;
-            playerCamera.enabled = true;
-            menuCamera.enabled = false;
+            case 0://none
+                menuConsoleMode = MenuConsoleModes.Mode.none;
+                playerCamera.enabled = true;
+                menuCamera.enabled = false;
+                controlCanvasActivation(menuCanvas, false);
+                controlCanvasActivation(menuOverlayCanvas, false);
+
+                gameEndCheckerFlg = false;
+                menuOverlayCanvas.planeDistance = GAMEEND_DIALOGUE_INACTIVE;
+
+                break;
+            case 1://default menu mode
+                menuConsoleMode = MenuConsoleModes.Mode.defaultMode;
+                playerCamera.enabled = false;
+                menuCamera.enabled = true;
+                controlCanvasActivation(menuCanvas, true);
+                controlCanvasActivation(menuOverlayCanvas, false);
+                break;
+            case 2://item console mode
+                menuConsoleMode = MenuConsoleModes.Mode.itemMode;
+                break;
+            default:
+                menuConsoleMode = MenuConsoleModes.Mode.none;
+                break;
         }
-        else if (consoleMode == 1)
+
+    }
+
+    public void setItemSelectEvent(int itemId)
+    {
+        Debug.Log("item button clicked->" + itemId);
+    }
+
+    //gui behaviors when a player clicks any menu buttons 
+    public void setGUIButtonEvent(int buttonEventCode)
+    {
+        if (menuConsoleMode != MenuConsoleModes.Mode.defaultMode) return;
+        
+        switch (buttonEventCode)
         {
-            menuConsoleMode = MenuConsoleModes.Mode.defaultMode;
-            playerCamera.enabled = false;
-            menuCamera.enabled = true;
+            case 0://Game end button clicked
+                if (gameEndCheckerFlg) return;
+                Debug.Log("game end button clicked");
+                gameEndCheckerFlg = true;
+                menuOverlayCanvas.planeDistance = GAMEEND_DIALOGUE_ACTIVE;
+                controlCanvasActivation(menuCanvas, false);
+                controlCanvasActivation(menuOverlayCanvas, true);
+                break;
+            case 1://Game end ok button clicked
+                Debug.Log("game stop->" + gameEndCheckerFlg);
+                if (!gameEndCheckerFlg) return;
+                gameEndCheckerFlg = false;
+                controlCanvasActivation(menuCanvas, true);
+                controlCanvasActivation(menuOverlayCanvas, false);
+                menuOverlayCanvas.planeDistance = GAMEEND_DIALOGUE_INACTIVE;
+                
+                UnityEngine.SceneManagement.SceneManager.LoadScene("hakoniwa_game");
+
+                break;
+            case 2://Game end cancel button clicked
+                Debug.Log("canceled->" + gameEndCheckerFlg);
+                if (!gameEndCheckerFlg) return;
+                gameEndCheckerFlg = false;
+                controlCanvasActivation(menuCanvas, true);
+                controlCanvasActivation(menuOverlayCanvas, false);
+                menuOverlayCanvas.planeDistance = GAMEEND_DIALOGUE_INACTIVE;
+                break;
+            case 3://Menu Cancel button clicked
+                if (gameEndCheckerFlg) return;
+                Debug.Log("menu close button clicked");
+                mainController.setMenuWindowOff();
+                break;
+            default:
+
+                break;
         }
-        else if(consoleMode == 2)
+    }
+
+    //activate front canvas raycaster
+    private void controlCanvasActivation(Canvas canvas, bool raycastFlg)
+    {
+            canvas.GetComponent<GraphicRaycaster>().enabled = raycastFlg;
+    }
+
+    public void setGameDialogueText(ArrayList textArr)
+    {
+        if (isReadingText == true) return;
+
+        currentReadingText = textArr;
+        Debug.Log("input text size->" + currentReadingText.Count);
+        if (currentReadingText.Count >1)
         {
-            menuConsoleMode = MenuConsoleModes.Mode.itemMode;
+            isReadingText = true;
+            readingCounter = 1;
+            //array set
+            readNextText();
         }
         else
         {
-            menuConsoleMode = MenuConsoleModes.Mode.none;
+            foreach(string text in currentReadingText)
+            {
+                gameDialogueText.text = text;
+            }
         }
     }
 
-
-    public void controlGui()
+    public void readNextText()
     {
-        updateViewCenterImage();
-        updateGUIContents();
-    }
-
-    private void updateViewCenterImage()
-    {
-        if (viewCenterTexture != null)
+        int counter = 1;
+        foreach (string text in currentReadingText)
         {
-            GUI.DrawTexture(viewCenterRectangle, viewCenterTexture);
-        }
-    }
-
-    private void updateGUIContents()
-    {
-        if (menuConsoleMode == MenuConsoleModes.Mode.defaultMode)
-        {
-
-        }else if(menuConsoleMode == MenuConsoleModes.Mode.itemMode)
-        {
-
-        }
-        else
-        {
-
+            if (counter == readingCounter)
+            {
+                gameDialogueText.text = text;
+                readingCounter += 1;
+                gameDialogueTextSub.text = "touch space key ->";
+                if (currentReadingText.Count == counter)
+                {
+                    isReadingText = false;
+                    gameDialogueTextSub.text = "";
+                }
+                return;
+            }
+            counter++;
         }
     }
 }
 
+//=========================================
+//namespace of GUI mode
+//=========================================
 namespace MenuConsoleModes
 {
     enum Mode

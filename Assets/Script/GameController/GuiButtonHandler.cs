@@ -3,64 +3,84 @@ using System.Collections;
 
 public class GuiButtonHandler : MonoBehaviour {
 
-    private ViewController viewContoroller;
+    private MainController mainContoroller;
     private GuiController guiController;
     private Canvas menuOverlayCanvas;
 
-    private bool gameEndCheckerFlg = false;
 
-	// Use this for initialization
-	void Start () {
-        viewContoroller = GameObject.Find("RigidBodyFPSController").GetComponent<ViewController>();
-        //guiController = viewContoroller.getGuiController();
-        menuOverlayCanvas = GameObject.Find("menuOverlayCanvas").GetComponent<Canvas>();
-        menuOverlayCanvas.planeDistance = 30;
+    private void checkInitiGUIController()
+    {
+        if (guiController == null)
+        {
+            mainContoroller = GameObject.Find("RigidBodyFPSController").GetComponent<MainController>();
+            guiController = mainContoroller.getGuiController();
+        }
     }
 
+    //gui menu buttons
     public void click_gameEndButton()
     {
-        if (gameEndCheckerFlg) return;
-
-        Debug.Log("game end button clicked");
-        //set dialogue
-        gameEndCheckerFlg = true;
-        dialogueCanvasOnOff(true);
+        checkInitiGUIController();
+        guiController.setGUIButtonEvent(0);
     }
 
     public void click_gameEndButton_OK()
     {
-        Debug.Log("game stop->"+ gameEndCheckerFlg);
-        if (!gameEndCheckerFlg) return;
-        gameEndCheckerFlg = false;
-
-        //tmp
-        dialogueCanvasOnOff(true);
+        checkInitiGUIController();
+        guiController.setGUIButtonEvent(1);
     }
+
     public void click_gameEndButton_Cancel()
     {
-        Debug.Log("canceled->"+gameEndCheckerFlg);
-        if (!gameEndCheckerFlg) return;
-        gameEndCheckerFlg = false;
-        dialogueCanvasOnOff(false);
+        checkInitiGUIController();
+        guiController.setGUIButtonEvent(2);
     }
-
-    public void dialogueCanvasOnOff(bool dialogueOn)
-    {
-        if (dialogueOn == true)
-        {
-            menuOverlayCanvas.planeDistance = 12;
-        }
-        else
-        {
-            menuOverlayCanvas.planeDistance = 30;
-        }
-    }
-
+    
     public void click_menuCloseButton()
     {
-        if (gameEndCheckerFlg) return;
+        checkInitiGUIController();
+        guiController.setGUIButtonEvent(3);
+    }
 
-        Debug.Log("menu close button clicked");
-        viewContoroller.setMenuWindowOff();
+    //item buttons 
+    public void click_itemButton1()
+    {
+        checkInitiGUIController();
+        guiController.setItemSelectEvent(1);
+    }
+    public void click_itemButton2()
+    {
+        checkInitiGUIController();
+        guiController.setItemSelectEvent(2);
+    }
+    public void click_itemButton3()
+    {
+        checkInitiGUIController();
+        guiController.setItemSelectEvent(3);
+    }
+    public void click_itemButton4()
+    {
+        checkInitiGUIController();
+        guiController.setItemSelectEvent(4);
+    }
+    public void click_itemButton5()
+    {
+        checkInitiGUIController();
+        guiController.setItemSelectEvent(5);
+    }
+    public void click_itemButton6()
+    {
+        checkInitiGUIController();
+        guiController.setItemSelectEvent(6);
+    }
+    public void click_itemButton7()
+    {
+        checkInitiGUIController();
+        guiController.setItemSelectEvent(7);
+    }
+    public void click_itemButton8()
+    {
+        checkInitiGUIController();
+        guiController.setItemSelectEvent(8);
     }
 }

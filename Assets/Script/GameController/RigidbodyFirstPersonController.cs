@@ -81,9 +81,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
         public MovementSettings movementSettings = new MovementSettings();
         public MouseLook mouseLook = new MouseLook();
         public AdvancedSettings advancedSettings = new AdvancedSettings();
-
-        public bool menuModeFlg = false;
-
+        
+        //added
+        private MainController mainController;
 
         private Rigidbody m_RigidBody;
         private CapsuleCollider m_Capsule;
@@ -125,12 +125,13 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_RigidBody = GetComponent<Rigidbody>();
             m_Capsule = GetComponent<CapsuleCollider>();
             mouseLook.Init (transform, cam.transform);
+            mainController = GetComponent<MainController>();
         }
 
 
         private void Update()
         {
-            if (menuModeFlg == true)
+            if (mainController.getMenuModeFlg() == true)
             {
                 return;
             }
@@ -139,7 +140,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             if (CrossPlatformInputManager.GetButtonDown("Jump") && !m_Jump)
             {
-                m_Jump = true;
+                //m_Jump = true;
             }
         }
 
@@ -219,7 +220,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private Vector2 GetInput()
         {
 
-            if (menuModeFlg == true)
+            if (mainController.getMenuModeFlg() == true)
             {
                 return new Vector2(0, 0);
             }
