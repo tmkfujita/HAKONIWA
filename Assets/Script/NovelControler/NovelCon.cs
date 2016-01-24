@@ -274,7 +274,7 @@ public class NovelCon : MonoBehaviour {
 		//画像を事前に読み込む
 		if(!leftImages[Current].Equals("")){
 			try{
-				tmpleftImage = ReadTexture ("Assets/Resources/img/"+leftImages[Current],300,300);
+				tmpleftImage = ReadTexture ("Assets/Resources/img/"+leftImages[Current],450,450);
 				print("テクスチャ読み込み完了");
 				leftImageFlag++;
 			}catch{
@@ -287,7 +287,7 @@ public class NovelCon : MonoBehaviour {
 
 		if (!rightImages [Current].Equals ("")) {
 			try {
-				tmprightImage = ReadTexture ("Assets/Resources/img/" + rightImages [Current], 300, 300);
+				tmprightImage = ReadTexture ("Assets/Resources/img/" + rightImages [Current], 450, 450);
 				print ("テクスチャ読み込み完了");
 				rightImageFlag++;
 			} catch {

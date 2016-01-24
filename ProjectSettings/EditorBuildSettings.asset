@@ -9,3 +9,5 @@ EditorBuildSettings:
     path: Assets/hakoniwa_game.unity
   - enabled: 1
     path: Assets/Scene/top.unity
+  - enabled: 1
+    path: Assets/Scene/ADV.unity
