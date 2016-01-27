@@ -7,24 +7,16 @@ public class GameItemManager : MonoBehaviour {
 
     public void addItemId(string id)
     {
-        if (itemDuplicationCheck(id) == false)
+        if (itemIdList.Contains(id) == false)
         {
             itemIdList.Add(id);
             Debug.Log("item added->" + id);
         }
     }
-    private bool itemDuplicationCheck(string inputId)
-    {
-        foreach (string id in itemIdList)
-        {
-            if (id == inputId) return true;
-        }
-        return false;
-    }
 
     public void removeItemID(string id)
     {
-        itemIdList.Remove(id);
+        if(itemIdList.Contains(id)==true) itemIdList.Remove(id);
     }
 
     public ArrayList getItemIdList()
@@ -46,6 +38,7 @@ public class GameItemManager : MonoBehaviour {
     {
         string path = "gameItems/gameItemText/" + id; 
         ArrayList textArr = new ArrayList();
+        //read it
 
         return textArr;
     }

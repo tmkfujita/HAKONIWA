@@ -18,6 +18,7 @@ public class GuiController{
     public bool isReadingText;
     private int readingCounter;
     private ArrayList currentReadingText;
+    private int colorChangeCounter = 0;
 
     //menu gui parametors
     private Canvas menuCanvas;
@@ -25,6 +26,9 @@ public class GuiController{
     private bool gameEndCheckerFlg = false;
     private const int GAMEEND_DIALOGUE_INACTIVE = 30;
     private const int GAMEEND_DIALOGUE_ACTIVE = 10;
+
+    private Text gameItemInfoText;
+    private string selectedItemId = "";
 
     public void initialize(Camera pCamera, MainController vController)
     {
@@ -47,6 +51,9 @@ public class GuiController{
         gameDialogueTextSub = GameObject.Find("gameDialogueTextSub").GetComponent<Text>();
         isReadingText = false;
 
+        //init item info Text
+        gameItemInfoText = GameObject.Find("itemInfoText").GetComponent<Text>();
+
         //initialize menu overlay canvas
         menuCanvas = GameObject.Find("menuCanvas").GetComponent<Canvas>();
 
@@ -56,6 +63,7 @@ public class GuiController{
 
         controlCanvasActivation(menuCanvas, false);
         controlCanvasActivation(menuOverlayCanvas, false);
+
     }
     
     //update GUI objects
@@ -76,18 +84,34 @@ public class GuiController{
     //for update gui images(now not in use)
     private void updateGUIContents()
     {
-        if (menuConsoleMode == MenuConsoleModes.Mode.defaultMode)
+        if (isReadingText == true)
         {
-
+            colorChangeCounter = colorChangeCounter + 1;
+            if (colorChangeCounter > 159)
+            {
+                if (colorChangeCounter == 160)
+                {
+                    gameDialogueTextSub.color = Color.black;
+                }
+                if (colorChangeCounter == 168)
+                {
+                    gameDialogueTextSub.color = Color.white;
+                }
+                if (colorChangeCounter == 178)
+                {
+                    gameDialogueTextSub.color = Color.black;
+                }
+                if (colorChangeCounter == 186)
+                {
+                    gameDialogueTextSub.color = Color.white;
+                }
+                if (colorChangeCounter > 200)
+                {
+                    colorChangeCounter = 0;
+                }
+            }
         }
-        else if (menuConsoleMode == MenuConsoleModes.Mode.itemMode)
-        {
 
-        }
-        else
-        {
-
-        }
     }
 
     //control player center image
@@ -114,6 +138,10 @@ public class GuiController{
     //change menu console display
     public void setMenuConsoleMode(int consoleMode)
     {
+        //init itempanel
+        loadPlayerItems();
+        loadCurrentPlayerSelectedItem();
+
         switch (consoleMode)
         {
             case 0://none
@@ -144,9 +172,81 @@ public class GuiController{
 
     }
 
-    public void setItemSelectEvent(int itemId)
+    private void loadCurrentPlayerSelectedItem()
     {
-        Debug.Log("item button clicked->" + itemId);
+        Image buttonImage = GameObject.Find("gameItemImage").GetComponent<Image>();
+        buttonImage.sprite = Resources.Load("gameItems/gameItemImage/nodata", typeof(Sprite)) as Sprite;
+
+        if (selectedItemId == "")
+        {
+            return;
+        }
+        else
+        {
+            buttonImage.sprite = Resources.Load("gameItems/gameItemImage/"+selectedItemId, typeof(Sprite)) as Sprite;
+        }
+
+
+    }
+
+    private void loadPlayerItems()
+    {
+        ArrayList itemArr;
+
+        resetItemPanelDatas();
+
+        itemArr = mainController.getGameItemManager().getItemIdList();
+
+        int imagePanelCounter = 1;
+        foreach (string id in itemArr)
+        {
+            //Debug.Log("load item test" + id);
+            string imagePath = mainController.getGameItemManager().getItemImagePath(id);
+
+            Image buttonImage = GameObject.Find("itemButton" + imagePanelCounter).GetComponent<Image>();
+            buttonImage.sprite = Resources.Load(imagePath, typeof(Sprite)) as Sprite;
+
+            Debug.Log("load image path->" + imagePath +"  to->itemButton"+imagePanelCounter);
+
+            imagePanelCounter++;
+        }
+    }
+
+    private void resetItemPanelDatas()
+    {
+        gameItemInfoText.text = "";
+
+        for (int i = 1; i <= 8; i++)
+        {
+            //Debug.Log("init item images");
+            Image buttonImage = GameObject.Find("itemButton" + i).GetComponent<Image>();
+            buttonImage.sprite = Resources.Load("gameItems/gameItemImage/nodata", typeof(Sprite)) as Sprite;
+
+        }
+    }
+
+    public void setItemSelectEvent(int buttonNo)
+    {
+        ArrayList itemArr;
+
+        itemArr = mainController.getGameItemManager().getItemIdList();
+
+        int itemButtonCounter = 1;
+        foreach (string id in itemArr)
+        {
+            if(buttonNo == itemButtonCounter)
+            {
+                string itemTextPath = mainController.getGameItemManager().getItemTextPath(id);
+                TextAsset itemText = Resources.Load(itemTextPath, typeof(TextAsset)) as TextAsset;
+                //Debug.Log("load text("+ itemTextPath +")->");
+                gameItemInfoText.text = itemText.text;
+
+                //set this item
+                selectedItemId = id;
+                return;
+            }
+            itemButtonCounter++;
+        }
     }
 
     //gui behaviors when a player clicks any menu buttons 

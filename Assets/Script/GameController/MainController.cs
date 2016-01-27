@@ -53,6 +53,13 @@ public class MainController : MonoBehaviour {
         walkSoundSource = rigidBodyFPSController.GetComponent<AudioSource>();
         gameSoundManager.addSoundEffectAudioSource(walkSoundSource);
 
+        //初回テキスト
+        ArrayList itemTextArr = new ArrayList();
+        itemTextArr.Add("さて、今日も居眠りこいてる問題児をたたき起こしてやりましょうか。");
+        itemTextArr.Add("てか、ずいぶんと今回は暑いなぁ、ふう・・・。");
+        itemTextArr.Add("毎度毎度、わけのわからない夢ばかり見やがって、\nたまにはプールサイドで美女と戯れる夢でも見てくりゃいいのに・・・・。");
+        guiContorller.setGameDialogueText(itemTextArr);
+
     }
 	
 	// (main routine) all controllers are controlled here
@@ -223,9 +230,16 @@ public class MainController : MonoBehaviour {
         //Debug.Log("get gui controller");
         return guiContorller;
     }
-    public bool getMenuModeFlg()
+    public bool getPlayerControlableFlg()
     {
-        return menuModeFlg;
+        if (menuModeFlg == true || guiContorller.isReadingText ==true)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 
     public GameItemManager getGameItemManager()

@@ -131,7 +131,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void Update()
         {
-            if (mainController.getMenuModeFlg() == true)
+            if (mainController.getPlayerControlableFlg() != true)
             {
                 return;
             }
@@ -220,7 +220,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private Vector2 GetInput()
         {
 
-            if (mainController.getMenuModeFlg() == true)
+            if (mainController.getPlayerControlableFlg() != true)
             {
                 return new Vector2(0, 0);
             }

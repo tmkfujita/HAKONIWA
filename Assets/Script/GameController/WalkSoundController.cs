@@ -23,7 +23,7 @@ public class WalkSoundController : MonoBehaviour {
 
      void Update()
      {
-        if (mainController.getMenuModeFlg() == true)
+        if (mainController.getPlayerControlableFlg() != true)
         {
             isWalking = false;
             isRunning = false;
