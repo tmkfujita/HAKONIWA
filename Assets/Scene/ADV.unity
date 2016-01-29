@@ -1071,8 +1071,8 @@ MonoBehaviour:
   nameText: {fileID: 672169305}
   leftImage: {fileID: 1035938932}
   rightImage: {fileID: 1302884012}
-  leftIcon: {fileID: 565728985}
-  rightIcon: {fileID: 504585775}
+  leftIcon: {fileID: 504585775}
+  rightIcon: {fileID: 565728985}
   backImage: {fileID: 1785645840}
   effect: {fileID: 1888459769}
   centerImage: {fileID: 1646972063}
