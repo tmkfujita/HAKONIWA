@@ -64,7 +64,7 @@ public class GameSoundManager : MonoBehaviour {
     {
         foreach (AudioSource source in soundEffectAudioSourceList)
         {
-            Debug.Log("se vol changed ->" + soundEffectVolume);
+            Debug.Log("set vol changed ->" + soundEffectVolume);
             source.volume = soundEffectVolume;
         }
     }
