@@ -29,6 +29,8 @@ public class NovelCon : MonoBehaviour {
 	public RawImage centerImage; 		//中央画像？
 	public MeshRenderer back; 		//360背景？
 
+	public RawImage tobe; 		//エフェクト用？
+	public RawImage next;
 
 	int currentLine = 0; 			// 現在の行番号
 	public string CurrentText = "";	//表示する会話
@@ -65,8 +67,12 @@ public class NovelCon : MonoBehaviour {
 	int leftIconFlag	= 0;		//iconフラグ
 	int bgmFlag			= 0;		//BGMフラグ
 	int nextSceneFlag   = 0;
+	int bgmFlagStop			= 0;		//BGMフラグ
 
 	string nextScene ="";
+
+	private float time;
+	public float fadetime;
 
 
 	// 文字の表示が完了しているかどうか
@@ -229,6 +235,12 @@ public class NovelCon : MonoBehaviour {
 //			}
 			InitChangeImages(DataCon.GetCurrentLine());
 
+		}else if(effectFlag == 3){
+			time -= Time.deltaTime;//時間更新(徐々に減らす)
+			float a = time / fadetime;//徐々に0に近づける
+//			Color color = image.color;//取得したimageのcolorを取得
+//			color.a = a;//カラーのアルファ値(透明度合)を徐々に減らす
+//			image.color = color;//取得したImageに適応させる
 		}
 
 		else{
@@ -254,6 +266,13 @@ public class NovelCon : MonoBehaviour {
 				bgmFlag = 0;
 				tmpBGM = "";
 			}
+
+			if(bgmFlagStop > 0){
+				BgmManager.Instance.Stop ();
+				bgmFlagStop = 0;
+				tmpBGM = "";
+			}
+
 
 			//画像の切り替え処理
 			if(backImageFlag > 0){
@@ -426,6 +445,13 @@ public class NovelCon : MonoBehaviour {
 					backImageFlag = 0;
 				}
 			}
+
+			if(backImages [Current].Equals ("tobecontinued1")){
+				Color color = tobe.color;//取得したimageのcolorを取得
+				color.a = 0;//カラーのアルファ値(透明度合)を徐々に減らす
+				tobe.color = color;//取得したImageに適応させる
+
+			}
 		}
 
 		if (!leftIcons [Current].Equals ("")) {
@@ -509,13 +535,17 @@ public class NovelCon : MonoBehaviour {
 
 		//BGM
 		if (!bgms [Current].Equals ("")) {
-			try {
-				print ("BGM読み込み完了");
-				tmpBGM = bgms [Current];
-				bgmFlag++;
-			} catch {
-				print ("BGM読み込み失敗@多分" + DataCon.GetCurrentLine () + "行目だと思う");
-				bgmFlag = 0;
+			if (bgms [Current].Equals ("0")) {
+				bgmFlagStop++;
+			} else {
+				try {
+					print ("BGM読み込み完了");
+					tmpBGM = bgms [Current];
+					bgmFlag++;
+				} catch {
+					print ("BGM読み込み失敗@多分" + DataCon.GetCurrentLine () + "行目だと思う");
+					bgmFlag = 0;
+				}
 			}
 		}
 
