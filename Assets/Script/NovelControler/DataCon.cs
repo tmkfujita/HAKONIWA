@@ -27,7 +27,7 @@ public class DataCon : MonoBehaviour {
 
 	public void MoveToNovelFunc () {
 		Debug.Log ("MoveToNovelFunc");
-		Application.LoadLevel("ADV");
+		UnityEngine.SceneManagement.SceneManager.LoadScene("hakoniwa_game");
 
 	}
 }
