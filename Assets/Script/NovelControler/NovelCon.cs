@@ -102,7 +102,7 @@ public class NovelCon : MonoBehaviour {
 			Debug.Log ("CSVText@."+line);
 			Debug.Log ("values@."+values);
 
-			tmpscenarios.Add(StringCheck(values[1]));
+			tmpscenarios.Add(StringCheck(values[1].Replace("@@","\n")));
 			tmpcharanamelist.Add(StringCheck(values[0]));
 			tmpbackImageslist.Add (StringCheck(values[2]));
 			tmpleftImageslist.Add (StringCheck(values[4]));
@@ -161,11 +161,78 @@ public class NovelCon : MonoBehaviour {
 			Debug.Log("effect"+lastUpdateEffect);
 			if (lastUpdateEffect >= 100) {
 				effectFlag = 0;
+				//背景画像の読み込み
+				//画像の切り替え処理
+				if(backImageFlag > 0){
+					Debug.Log("backImage");
+
+					backImage.texture = tmpbackImage;
+					tmpbackImage = null;
+					backImageFlag = 0;
+				}
+
+				if(rightImageFlag > 0){
+					rightImage.texture = tmprightImage;
+					tmprightImage = null;
+					rightImageFlag = 0;
+				}
+
+				if(leftImageFlag > 0){
+					leftImage.texture = tmpleftImage;
+					tmpleftImage = null;
+					leftImageFlag = 0;
+				}
+
+				if(leftIconFlag > 0){
+					leftIcon.texture = tmpleftIcon;
+					tmpleftIcon = null;
+					leftIconFlag = 0;
+				}
+
+				if(rightIconFlag > 0){
+					rightIcon.texture = tmprightIcon;
+					tmprightIcon = null;
+					rightIconFlag = 0;
+				}
+
+				if(centerImageFlag > 0){
+					centerImage.texture = tmpcenterImage;
+					tmpcenterImage = null;
+					centerImageFlag = 0;
+				}
 			}
+
+
+				
+
+			//背景画像の読み込み
+//			if (!backImages [DataCon.GetCurrentLine()].Equals ("")) {
+//				if (!backImages [DataCon.GetCurrentLine()].Equals ("0")) {
+//					try {
+//						tmpbackImage = ReadTexture ("Assets/Resources/img/" + backImages [DataCon.GetCurrentLine()], 1024, 768);
+//						print (backImages [DataCon.GetCurrentLine()]+"テクスチャ読み込み完了");
+//						backImageFlag++;
+//					} catch {
+//						print ("テクスチャ読み込み失敗@多分" + DataCon.GetCurrentLine () + "行目だと思う");
+//						backImageFlag = 0;
+//					}
+//				} else {
+//					try {
+//						tmpbackImage = ReadTexture ("Assets/Resources/img/base.png", 1024, 768);
+//						print ("テクスチャ読み込み完了");
+//						backImageFlag++;
+//					} catch {
+//						print ("テクスチャ読み込み失敗@多分" + DataCon.GetCurrentLine () + "行目だと思う");
+//						backImageFlag = 0;
+//					}
+//				}
+//			}
+			InitChangeImages(DataCon.GetCurrentLine());
+
 		}
 
 		else{
-			if (Input.GetMouseButtonDown(0)) {
+			if (Input.GetMouseButtonDown(0) || Input.GetKeyDown("space")) {
 				
 				Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 				RaycastHit hit = new RaycastHit();
@@ -190,7 +257,9 @@ public class NovelCon : MonoBehaviour {
 
 			//画像の切り替え処理
 			if(backImageFlag > 0){
-				back.material.mainTexture = tmpbackImage;
+				Debug.Log("backImage");
+
+				backImage.texture = tmpbackImage;
 				tmpbackImage = null;
 				backImageFlag = 0;
 			}
@@ -227,12 +296,12 @@ public class NovelCon : MonoBehaviour {
 
 			// 文字の表示が完了してるならクリック時に次の行を表示する
 			if( IsCompleteDisplayText ){
-				if(DataCon.GetCurrentLine() < scenarios.Length && Input.GetMouseButtonDown(0)){
+				if((DataCon.GetCurrentLine() < scenarios.Length && Input.GetMouseButtonDown(0)) || (DataCon.GetCurrentLine() < scenarios.Length &&  Input.GetKeyDown("space"))){
 					SetNextLine();
 				}
 			}else{
 				// 完了してないなら文字をすべて表示する
-				if(Input.GetMouseButtonDown(0)){
+				if(Input.GetMouseButtonDown(0) || Input.GetKeyDown("space")){
 					timeUntilDisplay = 0;
 				}
 			}
@@ -262,6 +331,11 @@ public class NovelCon : MonoBehaviour {
 		lastUpdateCharacter = -1;
 		string tmp = characters[DataCon.GetCurrentLine()];
 		print("名前です＠" +tmp);
+		if(tmp.Equals("1")){
+			effectFlag = 1;
+		}else if(tmp.Equals("2")){
+			effectFlag = 2;
+		}else 
 		if(tmp.Contains("@@@")){
 			nextScene = tmp.Replace ("@@@", "");
 			nextSceneFlag = 1;
@@ -273,70 +347,163 @@ public class NovelCon : MonoBehaviour {
 	void InitChangeImages(int Current){
 		//画像を事前に読み込む
 		if(!leftImages[Current].Equals("")){
-			try{
-				tmpleftImage = ReadTexture ("Assets/Resources/img/"+leftImages[Current],450,450);
-				print("テクスチャ読み込み完了");
-				leftImageFlag++;
-			}catch{
-				print("テクスチャ読み込み失敗@多分" + DataCon.GetCurrentLine() + "行目だと思う");
-				print("テクスチャ読み込み失敗@多分" + Application.dataPath+"/Resources/img/"+leftImages[Current]);
+			if (!leftImages [Current].Equals ("0")) {
+				try {
+//					tmpleftImage = ReadTexture ("Assets/Resources/img/" + leftImages [Current], 500, 500);
+					tmpleftImage = Resources.Load("img/"+leftImages [Current])as Texture;
 
-				leftImageFlag=0;
+					print ("tmpleftImageテクスチャ読み込み完了");
+					leftImageFlag++;
+				} catch {
+					print ("テクスチャ読み込み失敗@多分" + DataCon.GetCurrentLine () + "行目だと思う");
+					print ("テクスチャ読み込み失敗@多分" + Application.dataPath + "/Resources/img/" + leftImages [Current]);
+
+					leftImageFlag = 0;
+				}
+			} else {
+				try {
+//					tmpleftImage = ReadTexture ("Assets/Resources/img/base.png", 500, 500);
+					tmpleftImage = Resources.Load("img/"+leftImages [Current])as Texture;
+
+					print ("テクスチャ読み込み完了");
+					leftImageFlag++;
+				} catch {
+					print ("テクスチャ読み込み失敗@多分" + DataCon.GetCurrentLine () + "行目だと思う");
+					print ("テクスチャ読み込み失敗@多分" + Application.dataPath + "/Resources/img/" + leftImages [Current]);
+
+					leftImageFlag = 0;
+				}
 			}
 		}
 
 		if (!rightImages [Current].Equals ("")) {
-			try {
-				tmprightImage = ReadTexture ("Assets/Resources/img/" + rightImages [Current], 450, 450);
-				print ("テクスチャ読み込み完了");
-				rightImageFlag++;
-			} catch {
-				print ("テクスチャ読み込み失敗@多分" + DataCon.GetCurrentLine () + "行目だと思う");
-				rightImageFlag = 0;
+			if(!rightImages [Current].Equals("0")){
+				try {
+//					tmprightImage = ReadTexture ("Assets/Resources/img/" + rightImages [Current], 500, 500);
+					tmprightImage = Resources.Load("img/"+rightImages [Current])as Texture;
+
+					print ("テクスチャ読み込み完了");
+					rightImageFlag++;
+				} catch {
+					print ("テクスチャ読み込み失敗@多分" + DataCon.GetCurrentLine () + "行目だと思う");
+					rightImageFlag = 0;
+				}
+			}else{
+				try {
+//					tmprightImage = ReadTexture ("Assets/Resources/img/base.png", 500, 500);
+					tmprightImage = Resources.Load("img/"+rightImages [Current])as Texture;
+
+					print ("テクスチャ読み込み完了");
+					rightImageFlag++;
+				} catch {
+					print ("テクスチャ読み込み失敗@多分" + DataCon.GetCurrentLine () + "行目だと思う");
+					rightImageFlag = 0;
+				}
 			}
 		}
 
 		if (!backImages [Current].Equals ("")) {
-			try {
-				tmpbackImage = ReadTexture ("Assets/Resources/img/" + backImages [Current], 300, 300);
-				print ("テクスチャ読み込み完了");
-				backImageFlag++;
-			} catch {
-				print ("テクスチャ読み込み失敗@多分" + DataCon.GetCurrentLine () + "行目だと思う");
-				backImageFlag = 0;
+			if (!backImages [Current].Equals ("0")) {
+				try {
+//					tmpbackImage = ReadTexture ("Assets/Resources/img/" + backImages [Current], 1024, 768);
+					tmpbackImage = Resources.Load("img/"+backImages [Current])as Texture;
+
+					print (backImages [Current]+"テクスチャ読み込み完了");
+					backImageFlag++;
+				} catch {
+					print ("テクスチャ読み込み失敗@多分" + DataCon.GetCurrentLine () + "行目だと思う");
+					backImageFlag = 0;
+				}
+			} else {
+				try {
+//					tmpbackImage = ReadTexture ("Assets/Resources/img/base.png", 1024, 768);
+					tmpbackImage = Resources.Load("img/"+backImages [Current])as Texture;
+
+					print ("テクスチャ読み込み完了");
+					backImageFlag++;
+				} catch {
+					print ("テクスチャ読み込み失敗@多分" + DataCon.GetCurrentLine () + "行目だと思う");
+					backImageFlag = 0;
+				}
 			}
 		}
 
 		if (!leftIcons [Current].Equals ("")) {
-			try {
-				tmpleftIcon = ReadTexture ("Assets/Resources/img/" + leftIcons [Current], 300, 300);
-				print ("テクスチャ読み込み完了");
-				leftIconFlag++;
-			} catch {
-				print ("テクスチャ読み込み失敗@多分" + DataCon.GetCurrentLine () + "行目だと思う");
-				leftIconFlag = 0;
+			if (!leftIcons [Current].Equals ("0")) {
+				
+				try {
+					tmpleftIcon = Resources.Load("img/"+leftIcons [Current])as Texture;
+//					tmpleftIcon = ReadTexture ("Assets/Resources/img/" + leftIcons [Current], 100, 100);
+					print ("テクスチャ読み込み完了");
+					leftIconFlag++;
+				} catch {
+					print ("テクスチャ読み込み失敗@多分" + DataCon.GetCurrentLine () + "行目だと思う");
+					leftIconFlag = 0;
+				}
+			} else {
+				try {
+					tmpleftIcon = Resources.Load("img/"+leftIcons [Current])as Texture;
+//					tmpleftIcon = ReadTexture ("Assets/Resources/img/base.png", 100, 100);
+					print ("テクスチャ読み込み完了");
+					leftIconFlag++;
+				} catch {
+					print ("テクスチャ読み込み失敗@多分" + DataCon.GetCurrentLine () + "行目だと思う");
+					leftIconFlag = 0;
+				}
 			}
 		}
 
 		if (!rightIcons [Current].Equals ("")) {
-			try {
-				tmprightIcon = ReadTexture ("Assets/Resources/img/" + rightIcons [Current], 300, 300);
-				print ("テクスチャ読み込み完了");
-				rightIconFlag++;
-			} catch {
-				print ("テクスチャ読み込み失敗@多分" + DataCon.GetCurrentLine () + "行目だと思う");
-				rightIconFlag = 0;
+			if (!rightIcons [Current].Equals ("0")) {
+				
+				try {
+//					tmprightIcon = ReadTexture ("Assets/Resources/img/" + rightIcons [Current], 100, 100);
+					tmprightIcon = Resources.Load("img/"+rightIcons [Current])as Texture;
+
+					print ("テクスチャ読み込み完了");
+					rightIconFlag++;
+				} catch {
+					print ("テクスチャ読み込み失敗@多分" + DataCon.GetCurrentLine () + "行目だと思う");
+					rightIconFlag = 0;
+				}
+			} else {
+				try {
+//					tmprightIcon = ReadTexture ("Assets/Resources/img/base.png", 100, 100);
+					tmprightIcon = Resources.Load("img/"+rightIcons [Current])as Texture;
+
+					print ("テクスチャ読み込み完了");
+					rightIconFlag++;
+				} catch {
+					print ("テクスチャ読み込み失敗@多分" + DataCon.GetCurrentLine () + "行目だと思う");
+					rightIconFlag = 0;
+				}
 			}
 		}
 
 		if (!centerImages [Current].Equals ("")) {
-			try {
-				tmpcenterImage = ReadTexture ("Assets/Resources/img/" + centerImages [Current], 300, 300);
-				print ("テクスチャ読み込み完了");
-				centerImageFlag++;
-			} catch {
-				print ("テクスチャ読み込み失敗@多分" + DataCon.GetCurrentLine () + "行目だと思う");
-				centerImageFlag = 0;
+			if (!centerImages [Current].Equals ("")) {
+				
+				try {
+					//					tmpcenterImage = ReadTexture ("Assets/Resources/img/" + centerImages [Current], 500, 500);
+					tmpcenterImage = Resources.Load("img/"+centerImages [Current])as Texture;
+
+					print ("テクスチャ読み込み完了");
+					centerImageFlag++;
+				} catch {
+					print ("テクスチャ読み込み失敗@多分" + DataCon.GetCurrentLine () + "行目だと思う");
+					centerImageFlag = 0;
+				}
+			} else {
+				try {
+					tmpcenterImage = Resources.Load("img/"+centerImages [Current])as Texture;
+
+//					tmpcenterImage = ReadTexture ("Assets/Resources/img/base.png", 500, 500);
+					print ("テクスチャ読み込み完了");
+					centerImageFlag++;
+				} catch {
+					print ("テクスチャ読み込み失敗@多分" + DataCon.GetCurrentLine () + "行目だと思う");
+					centerImageFlag = 0;
+				}
 			}
 		}
 

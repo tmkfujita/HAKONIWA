@@ -85,11 +85,19 @@ PlayerSettings:
   wiiUControllerCount: 0
   m_SupportedAspectRatios:
     4:3: 1
+<<<<<<< HEAD
     5:4: 0
     16:10: 0
     16:9: 0
     Others: 0
   bundleIdentifier: com.Company.ProductName
+=======
+    5:4: 1
+    16:10: 1
+    16:9: 1
+    Others: 1
+  bundleIdentifier: com.tkg.hakoniwa
+>>>>>>> ノベル
   bundleVersion: 1.0
   preloadedAssets: []
   metroEnableIndependentInputSource: 0
@@ -98,7 +106,7 @@ PlayerSettings:
   virtualRealitySupported: 0
   productGUID: 55028cb9d95cde2498830e94871e8541
   AndroidBundleVersionCode: 1
-  AndroidMinSdkVersion: 9
+  AndroidMinSdkVersion: 19
   AndroidPreferredInstallLocation: 1
   aotOptions: 
   apiCompatibilityLevel: 2
