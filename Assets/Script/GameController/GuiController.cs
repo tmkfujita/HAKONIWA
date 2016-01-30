@@ -273,8 +273,9 @@ public class GuiController{
                 controlCanvasActivation(menuCanvas, true);
                 controlCanvasActivation(menuOverlayCanvas, false);
                 menuOverlayCanvas.planeDistance = GAMEEND_DIALOGUE_INACTIVE;
-                
-                UnityEngine.SceneManagement.SceneManager.LoadScene("hakoniwa_game");
+
+                //UnityEngine.SceneManagement.SceneManager.LoadScene("hakoniwa_game");
+                UnityEngine.SceneManagement.SceneManager.LoadScene("scene/top");
 
                 break;
             case 2://Game end cancel button clicked

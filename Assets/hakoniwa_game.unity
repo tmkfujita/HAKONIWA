@@ -2664,7 +2664,7 @@ GameObject:
   - 23: {fileID: 274688383}
   - 114: {fileID: 274688386}
   m_Layer: 0
-  m_Name: naminagi
+  m_Name: naginami
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2677,11 +2677,13 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 274688381}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.49, y: 5.97, z: -14.97}
+  m_LocalPosition: {x: -1.97, y: 5.97, z: -13.95}
   m_LocalScale: {x: 2.4736905, y: 3.6688216, z: 2.4736958}
   m_Children:
   - {fileID: 1314345255}
   - {fileID: 654777151}
+  - {fileID: 1459393195}
+  - {fileID: 1798760856}
   m_Father: {fileID: 1744405660}
   m_RootOrder: 2
 --- !u!23 &274688383
@@ -9428,7 +9430,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1189934645}
   m_LocalRotation: {x: 0, y: 0.93969256, z: 0, w: -0.34202033}
-  m_LocalPosition: {x: -22.06961, y: 6.8, z: 16.317596}
+  m_LocalPosition: {x: -22.06961, y: 9.26, z: 16.317596}
   m_LocalScale: {x: 1.6106519, y: 1.6106507, z: 1.6106508}
   m_Children:
   - {fileID: 1599477107}
@@ -10076,7 +10078,7 @@ GameObject:
   - 23: {fileID: 1314345257}
   - 102: {fileID: 1314345256}
   m_Layer: 0
-  m_Name: naminagi
+  m_Name: naginami_text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10101,7 +10103,7 @@ TextMesh:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1314345254}
-  m_Text: NAMI-NAGI
+  m_Text: NAGI-NAMI
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
@@ -10965,11 +10967,11 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1459393194}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 32.12, y: 0.95, z: -61.52}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.12607877, y: -0.7074987, z: 0.14}
+  m_LocalScale: {x: 0.4042543, y: 0.40425345, z: 0.2725671}
   m_Children: []
-  m_Father: {fileID: 1534752945}
-  m_RootOrder: 1
+  m_Father: {fileID: 274688382}
+  m_RootOrder: 2
 --- !u!199 &1459393196
 ParticleSystemRenderer:
   m_ObjectHideFlags: 0
@@ -12650,8 +12652,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 770580291}
-  - {fileID: 1459393195}
-  - {fileID: 1798760856}
   m_Father: {fileID: 1737461304}
   m_RootOrder: 3
 --- !u!1 &1557587417
@@ -15411,11 +15411,11 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1798760855}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 32.12, y: 7.3600006, z: -61.52}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.12607877, y: 1.0396574, z: 0.14}
+  m_LocalScale: {x: 0.4042543, y: 0.40425345, z: 0.2725671}
   m_Children: []
-  m_Father: {fileID: 1534752945}
-  m_RootOrder: 2
+  m_Father: {fileID: 274688382}
+  m_RootOrder: 3
 --- !u!199 &1798760857
 ParticleSystemRenderer:
   m_ObjectHideFlags: 0

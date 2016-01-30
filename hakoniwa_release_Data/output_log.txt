@@ -1,0 +1,87 @@
+Initialize engine version: 5.3.1f1 (cc9cbbcc37b4)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: NVIDIA GeForce GTX 560 Ti   (ID=0x1200)
+    Vendor:   NVIDIA
+    VRAM:     978 MB
+Begin MonoManager ReloadAssembly
+Platform assembly: K:\unity\hakoniwa_release\hakoniwa_release_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading K:\unity\hakoniwa_release\hakoniwa_release_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: K:\unity\hakoniwa_release\hakoniwa_release_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading K:\unity\hakoniwa_release\hakoniwa_release_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: K:\unity\hakoniwa_release\hakoniwa_release_Data\Managed\Assembly-UnityScript.dll (this message is harmless)
+Loading K:\unity\hakoniwa_release\hakoniwa_release_Data\Managed\Assembly-UnityScript.dll into Unity Child Domain
+Platform assembly: K:\unity\hakoniwa_release\hakoniwa_release_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading K:\unity\hakoniwa_release\hakoniwa_release_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: K:\unity\hakoniwa_release\hakoniwa_release_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading K:\unity\hakoniwa_release\hakoniwa_release_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+- Completed reload, in  0.244 seconds
+Platform assembly: K:\unity\hakoniwa_release\hakoniwa_release_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: K:\unity\hakoniwa_release\hakoniwa_release_Data\Managed\System.dll (this message is harmless)
+<RI> Initializing input.
+<RI> Input initialized.
+desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
+<RI> Initialized touch support.
+UnloadTime: 0.808464 ms
+DontDestroyOnLoad only work for root GameObjects or components on root GameObjects.
+ 
+(Filename:  Line: 356)
+
+Setting up 2 worker threads for Enlighten.
+  Thread -> id: 61e8 -> priority: 1 
+  Thread -> id: 6cdc -> priority: 1 
+MoveToNovelFunc
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 6.320952 ms
+
+Unloading 6 unused Assets to reduce memory usage. Loaded Objects now: 895.
+Total: 0.523680 ms (FindLiveObjects: 0.035688 ms CreateObjectMapping: 0.029133 ms MarkObjects: 0.392578 ms  DeleteObjects: 0.065915 ms)
+
+input text size->4
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+game end button clicked
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+game stop->True
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.827784 ms
+
+Unloading 66 unused Assets to reduce memory usage. Loaded Objects now: 276.
+Total: 0.726889 ms (FindLiveObjects: 0.033868 ms CreateObjectMapping: 0.037145 ms MarkObjects: 0.361988 ms  DeleteObjects: 0.292795 ms)
+
+DontDestroyOnLoad only work for root GameObjects or components on root GameObjects.
+ 
+(Filename:  Line: 356)
+
+MoveToNovelFunc
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.422076 ms
+
+Unloading 4 unused Assets to reduce memory usage. Loaded Objects now: 922.
+Total: 0.549901 ms (FindLiveObjects: 0.032775 ms CreateObjectMapping: 0.033503 ms MarkObjects: 0.441741 ms  DeleteObjects: 0.041151 ms)
+
+input text size->4
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+menu close button clicked
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+menu close button clicked
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+

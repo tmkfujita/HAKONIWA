@@ -69,7 +69,7 @@ public class GameItemEventExecutor : MonoBehaviour {
                 guiController.setGameDialogueText(itemTextArr);
                 changeMusic();
                 wallMoveFlg = true;
-                GameObject.Find("naminagi").tag = "clickableObject";
+                GameObject.Find("naginami").tag = "clickableObject";
                 firewall.SetActive(true);
                 break;
             default:
