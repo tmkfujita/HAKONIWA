@@ -10,7 +10,7 @@ using UnityStandardAssets.Characters.FirstPerson;
 public class MainController : MonoBehaviour {
 
     private RigidbodyFirstPersonController rigidBodyFPSController;
-    private GuiController guiContorller;//rendering controller of game items
+    private GuiController guiController;//rendering controller of game items
     private RaycastHit hit;
     private bool menuModeFlg = false;
     private ArrayList gameControllerObjects = new ArrayList();
@@ -25,6 +25,7 @@ public class MainController : MonoBehaviour {
 
     private GameItemManager gameItemManager;
     private GameSoundManager gameSoundManager;
+    private GameItemEventExecutor gameItemEventExecutor;
 
 	// initialize all controllers
 	void Start () {
@@ -37,8 +38,8 @@ public class MainController : MonoBehaviour {
 
         //init gui
         rigidBodyFPSController = GameObject.Find("RigidBodyFPSController").GetComponent<RigidbodyFirstPersonController>();
-        guiContorller = new GuiController();
-        guiContorller.initialize(playerCamera,this);
+        guiController = new GuiController();
+        guiController.initialize(playerCamera,this);
 
         //init object manager
         if (gameObjectManager == null)
@@ -47,19 +48,24 @@ public class MainController : MonoBehaviour {
         }
         gameItemManager = gameObjectManager.GetComponent<GameItemManager>();
         gameSoundManager = gameObjectManager.GetComponent<GameSoundManager>();
+        gameItemEventExecutor = gameObjectManager.GetComponent<GameItemEventExecutor>();
+        gameItemEventExecutor.initialize(guiController, gameSoundManager, gameItemManager);
+
 
         musicSoundSource = GameObject.Find("MainCamera").GetComponent<AudioSource>();
         gameSoundManager.addMusicAudioSource(musicSoundSource);
         walkSoundSource = rigidBodyFPSController.GetComponent<AudioSource>();
         gameSoundManager.addSoundEffectAudioSource(walkSoundSource);
 
+
         //初回テキスト
         ArrayList itemTextArr = new ArrayList();
         itemTextArr.Add("さて、今日も居眠りこいてる問題児をたたき起こしてやりましょうか。");
         itemTextArr.Add("てか、ずいぶんと今回は暑いなぁ、ふう・・・。");
         itemTextArr.Add("毎度毎度、わけのわからない夢ばかり見やがって、\nたまにはプールサイドで美女と戯れる夢でも見てくりゃいいのに・・・・。");
-        guiContorller.setGameDialogueText(itemTextArr);
-
+        itemTextArr.Add("「HAKONIWA」\nマウスの視点移動とキーボードの「W,A,S,D」入力でプレイヤーを操作できます\n画面中央に手のアイコンが表示されている状態で左クリックすると対象に触れることができます");
+        guiController.setGameDialogueText(itemTextArr);
+        
     }
 	
 	// (main routine) all controllers are controlled here
@@ -97,10 +103,10 @@ public class MainController : MonoBehaviour {
         }
 
         //read next text
-        //Debug.Log("isreading text->" + guiContorller.isReadingText);
-        if(guiContorller.isReadingText == true && keyboardSpaceKey==true)
+        //Debug.Log("isreading text->" + guiController.isReadingText);
+        if (guiController.isReadingText == true && keyboardSpaceKey==true)
         {
-            guiContorller.readNextText();
+            guiController.readNextText();
         }
 
         //====================================
@@ -108,6 +114,7 @@ public class MainController : MonoBehaviour {
         //====================================
 
         GameObject detectedGameObject = null;
+        string eventExecuteCode = "";
 
         //check game object is clicked in front of the player
         detectedGameObject = checkFrontObject(mouseLeftButton);
@@ -119,7 +126,7 @@ public class MainController : MonoBehaviour {
             if (detectedGameObject.tag == "gameItemObject")
             {
                 //player have to finish reading
-                if (guiContorller.isReadingText == true) return;
+                if (guiController.isReadingText == true) return;
 
                 GameItem item = detectedGameObject.GetComponent<GameItem>();
                 ArrayList itemTextArr = new ArrayList();
@@ -129,9 +136,10 @@ public class MainController : MonoBehaviour {
                     {
                         gameItemManager.addItemId(item.getItemId());
                         item.touchIt();
+                        eventExecuteCode = item.getEventExecuteCode();
                     }
                     itemTextArr.Add(item.getItemInfo());
-                    guiContorller.setGameDialogueText(itemTextArr);
+                    guiController.setGameDialogueText(itemTextArr);
 
                 }
                 //Debug.Log("gameitem->"+ detectedGameObject.GetComponent<GameItem>().getItemId());
@@ -146,21 +154,26 @@ public class MainController : MonoBehaviour {
                     if (!item.isAlreadyTouched())
                     {
                         item.touchIt();
+                        eventExecuteCode = item.getEventExecuteCode();
                     }
                     itemTextArr.Add(item.getItemInfo());
-                    guiContorller.setGameDialogueText(itemTextArr);
+                    guiController.setGameDialogueText(itemTextArr);
 
                 }
             }
 
-            //if it is a Item, get name and destroy Gameobject
+            //if it have an event execute message
+            if(eventExecuteCode != "" || eventExecuteCode != null)
+            {
+                gameItemEventExecutor.setEventCode(eventExecuteCode);
+            }
         }
     }
 
     //gui controller
     void OnGUI()
     {
-        guiContorller.controlGui();
+        guiController.controlGui();
     }
     
 
@@ -182,14 +195,14 @@ public class MainController : MonoBehaviour {
         UnityEngine.Cursor.lockState = CursorLockMode.Confined;
         menuModeFlg = true;
         //set gui console mode to defaultMenu mode
-        guiContorller.setMenuConsoleMode(1);
+        guiController.setMenuConsoleMode(1);
         //reset current view center image
-        guiContorller.setViewCenterImage("");
+        guiController.setViewCenterImage("");
     }
     public void setMenuWindowOff()
     {
         menuModeFlg = false;
-        guiContorller.setMenuConsoleMode(0);
+        guiController.setMenuConsoleMode(0);
     }
     
    //control detected object
@@ -205,18 +218,18 @@ public class MainController : MonoBehaviour {
             //Debug.Log("distance(" + objectHit.tag + ")" + hit.distance);
             if (hit.distance < clickableDist &&(objectHit.gameObject.tag== "clickableObject" || objectHit.gameObject.tag == "gameItemObject"))
             {
-                guiContorller.setViewCenterImage(imagePath);
+                guiController.setViewCenterImage(imagePath);
                 if (mouseLeftButton) return objectHit.gameObject;
             }
             else
             {
-                //guiContorller.setViewCenterImage("Images/hand_b");
-                guiContorller.setViewCenterImage("");
+                //guiController.setViewCenterImage("Images/hand_b");
+                guiController.setViewCenterImage("");
             }
         }
         else
         {
-            guiContorller.setViewCenterImage("");
+            guiController.setViewCenterImage("");
         }
         //Debug.DrawRay(ray.origin, ray.direction * 20, Color.yellow);
         return null;
@@ -228,11 +241,11 @@ public class MainController : MonoBehaviour {
     public GuiController getGuiController()
     {
         //Debug.Log("get gui controller");
-        return guiContorller;
+        return guiController;
     }
     public bool getPlayerControlableFlg()
     {
-        if (menuModeFlg == true || guiContorller.isReadingText ==true)
+        if (menuModeFlg == true || guiController.isReadingText ==true)
         {
             return false;
         }

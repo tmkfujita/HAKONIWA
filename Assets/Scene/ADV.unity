@@ -132,6 +132,10 @@ Prefab:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11450246, guid: 7521f6f0afaaa4c86afd2d6698303da2, type: 2}
+      propertyPath: TargetVolume
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7521f6f0afaaa4c86afd2d6698303da2, type: 2}
   m_IsPrefabParent: 0
@@ -753,7 +757,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1149,9 +1153,12 @@ MonoBehaviour:
   effect: {fileID: 1888459769}
   centerImage: {fileID: 1646972063}
   back: {fileID: 0}
+  tobe: {fileID: 335641656}
+  next: {fileID: 1505253019}
   CurrentText: 
   CurrentName: 
   intervalForCharacterDisplay: 0.1
+  fadetime: 0
 --- !u!1 &1302884010
 GameObject:
   m_ObjectHideFlags: 0
@@ -1229,7 +1236,7 @@ GameObject:
   - 222: {fileID: 1505253020}
   - 114: {fileID: 1505253019}
   m_Layer: 5
-  m_Name: RawImage
+  m_Name: next
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1264,7 +1271,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:

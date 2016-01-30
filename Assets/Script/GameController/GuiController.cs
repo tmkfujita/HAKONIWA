@@ -30,6 +30,8 @@ public class GuiController{
     private Text gameItemInfoText;
     private string selectedItemId = "";
 
+    private bool gameEndTextFlg = false;
+
     public void initialize(Camera pCamera, MainController vController)
     {
         mainController = vController;
@@ -271,8 +273,9 @@ public class GuiController{
                 controlCanvasActivation(menuCanvas, true);
                 controlCanvasActivation(menuOverlayCanvas, false);
                 menuOverlayCanvas.planeDistance = GAMEEND_DIALOGUE_INACTIVE;
-                
-                UnityEngine.SceneManagement.SceneManager.LoadScene("hakoniwa_game");
+
+                //UnityEngine.SceneManagement.SceneManager.LoadScene("hakoniwa_game");
+                UnityEngine.SceneManagement.SceneManager.LoadScene("scene/top");
 
                 break;
             case 2://Game end cancel button clicked
@@ -319,6 +322,8 @@ public class GuiController{
             {
                 gameDialogueText.text = text;
             }
+
+            if (gameEndTextFlg) gameEndProcess();
         }
     }
 
@@ -336,11 +341,22 @@ public class GuiController{
                 {
                     isReadingText = false;
                     gameDialogueTextSub.text = "";
+
+                    if (gameEndTextFlg) gameEndProcess();
                 }
                 return;
             }
             counter++;
         }
+    }
+
+    public void setGameEndTextFlg()
+    {
+        gameEndTextFlg = true;
+    }
+    private void gameEndProcess()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("ADV");
     }
 }
 
